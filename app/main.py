@@ -240,19 +240,3 @@ def verify_page(
             "verified": verified,
         },
     )
-
-@app.post("/dev/create-api-key")
-def create_dev_api_key(
-    db: Session = Depends(get_db),
-):
-    from .services.api_keys import create_api_key
-
-    api_key = create_api_key(
-        db,
-        "local-development-key",
-    )
-
-    return {
-        "api_key": api_key,
-        "warning": "Development only. Store this key securely.",
-    }

@@ -4,6 +4,8 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.database import SessionLocal
+from app.services.api_keys import create_api_key
 
 
 SDK_PATH = Path(__file__).resolve().parent.parent / "sdk"
@@ -18,13 +20,15 @@ client = TestClient(app)
 
 
 def get_test_api_key():
-    response = client.post(
-        "/dev/create-api-key"
-    )
+    db = SessionLocal()
 
-    assert response.status_code == 200
-
-    return response.json()["api_key"]
+    try:
+        return create_api_key(
+            db,
+            "test-sdk-key",
+        )
+    finally:
+        db.close()
 
 
 def test_sdk_creates_receipt():
