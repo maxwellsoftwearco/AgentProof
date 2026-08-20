@@ -10,14 +10,21 @@ from sqlalchemy.orm import Session
 
 from .database import Base, engine, get_db
 from .models import Receipt
-from .schemas import ReceiptCreate, ReceiptResponse
+from .schemas import (
+    APIKeyCreate,
+    ReceiptCreate,
+    ReceiptResponse,
+)
 from .services.receipts import (
     calculate_hash,
     canonicalize_record,
     create_receipt_id,
     normalize_timestamp,
 )
-from .services.api_keys import verify_api_key
+from .services.api_keys import (
+    create_api_key,
+    verify_api_key,
+)
 
 
 # Create the database tables when the application starts.
@@ -36,12 +43,12 @@ templates = Jinja2Templates(
 
 
 @app.get("/")
-def root():
-    return {
-        "name": "AgentProof",
-        "version": "0.1.0",
-        "status": "running",
-    }
+def root(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="home.html",
+        context={},
+    )
 
 def require_api_key(
     x_api_key: str | None = Header(default=None),
@@ -61,12 +68,29 @@ def require_api_key(
 
     return x_api_key
 
+@app.post("/api-keys")
+def create_new_api_key(
+    data: APIKeyCreate,
+    db: Session = Depends(get_db),
+):
+    api_key = create_api_key(
+        db,
+        data.name,
+    )
+
+    return {
+        "api_key": api_key,
+        "name": data.name,
+        "warning": "Store this API key securely. It cannot be retrieved later.",
+    }
+
 @app.post(
     "/receipts",
     response_model=ReceiptResponse,
 )
 def create_receipt(
     receipt: ReceiptCreate,
+    request: Request,
     db: Session = Depends(get_db),
     api_key: str = Depends(require_api_key),
 ):
@@ -121,9 +145,9 @@ def create_receipt(
         result_status=db_receipt.result_status,
         metadata=db_receipt.metadata_json,
         record_hash=db_receipt.record_hash,
-        verification_url=(
-            f"/receipts/{db_receipt.receipt_id}"
-        ),
+        verification_url=str(
+            request.base_url
+        ).rstrip("/") + f"/verify/{db_receipt.receipt_id}",
     )
 
 
