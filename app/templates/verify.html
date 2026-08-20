@@ -1,83 +1,166 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AgentProof Verification</title>
+```
+<title>AgentProof Verification</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 60px auto;
-            padding: 20px;
-            background: #f5f5f5;
-        }
+<style>
+    * {
+        box-sizing: border-box;
+    }
 
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f7fb;
+        color: #111827;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+    }
 
-        h1 {
-            margin-top: 0;
-        }
+    .container {
+        width: 100%;
+        max-width: 760px;
+    }
 
-        .status {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 20px 0;
-        }
+    .header {
+        text-align: center;
+        margin-bottom: 24px;
+    }
 
-        .verified {
-            color: #15803d;
-        }
+    .logo {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
 
-        .invalid {
-            color: #b91c1c;
-        }
+    .tagline {
+        margin-top: 6px;
+        color: #6b7280;
+        font-size: 14px;
+    }
 
-        .row {
-            margin: 18px 0;
-        }
+    .card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    }
 
-        .label {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 5px;
-        }
+    .status {
+        border-radius: 12px;
+        padding: 18px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 28px;
+    }
 
-        .value {
-            font-size: 16px;
-            word-break: break-word;
-        }
+    .verified {
+        color: #166534;
+        background: #dcfce7;
+        border: 1px solid #bbf7d0;
+    }
 
-        .hash {
-            font-family: monospace;
-            font-size: 13px;
-        }
-    </style>
+    .invalid {
+        color: #991b1b;
+        background: #fee2e2;
+        border: 1px solid #fecaca;
+    }
+
+    .section-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin: 28px 0 14px;
+    }
+
+    .row {
+        padding: 15px 0;
+        border-bottom: 1px solid #eef0f3;
+    }
+
+    .row:last-child {
+        border-bottom: none;
+    }
+
+    .label {
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .value {
+        font-size: 16px;
+        font-weight: 500;
+        word-break: break-word;
+    }
+
+    .hash {
+        font-family: Consolas, Monaco, monospace;
+        font-size: 12px;
+        line-height: 1.6;
+        color: #374151;
+    }
+
+    .match {
+        margin-top: 18px;
+        padding: 14px;
+        border-radius: 10px;
+        background: #f9fafb;
+        font-size: 13px;
+        color: #4b5563;
+    }
+
+    .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 12px;
+        color: #9ca3af;
+    }
+</style>
+```
+
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
 
-    <h1>AgentProof</h1>
+```
+<div class="header">
+    <div class="logo">AgentProof</div>
+    <div class="tagline">
+        Verifiable receipts for AI-agent actions
+    </div>
+</div>
+
+<div class="card">
 
     {% if verified %}
         <div class="status verified">
-            ✓ VERIFIED
+            VERIFIED
         </div>
     {% else %}
         <div class="status invalid">
-            ✕ INVALID
+            INVALID
         </div>
     {% endif %}
 
+    <div class="section-title">
+        Receipt
+    </div>
 
     <div class="row">
         <div class="label">Receipt ID</div>
@@ -86,14 +169,12 @@
         </div>
     </div>
 
-
     <div class="row">
-        <div class="label">Agent</div>
+        <div class="label">AI Agent</div>
         <div class="value">
             {{ agent_id }}
         </div>
     </div>
-
 
     <div class="row">
         <div class="label">Action</div>
@@ -102,14 +183,12 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="label">Result</div>
         <div class="value">
             {{ result_status }}
         </div>
     </div>
-
 
     <div class="row">
         <div class="label">Authorization</div>
@@ -118,7 +197,6 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="label">Timestamp</div>
         <div class="value">
@@ -126,21 +204,42 @@
         </div>
     </div>
 
+    <div class="section-title">
+        Integrity Verification
+    </div>
 
     <div class="row">
-        <div class="label">Stored Hash</div>
+        <div class="label">Stored SHA-256 Hash</div>
         <div class="value hash">
             {{ record_hash }}
         </div>
     </div>
 
-
     <div class="row">
-        <div class="label">Calculated Hash</div>
+        <div class="label">Calculated SHA-256 Hash</div>
         <div class="value hash">
             {{ calculated_hash }}
         </div>
     </div>
+
+    {% if verified %}
+        <div class="match">
+            The stored hash matches the calculated hash.
+            The receipt data has not been detected as modified.
+        </div>
+    {% else %}
+        <div class="match">
+            The stored hash does not match the calculated hash.
+            The receipt may have been modified.
+        </div>
+    {% endif %}
+
+</div>
+
+<div class="footer">
+    Powered by AgentProof
+</div>
+```
 
 </div>
 
