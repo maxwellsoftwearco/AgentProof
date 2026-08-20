@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgentProof Verification</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .status {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .verified {
+            color: #15803d;
+        }
+
+        .invalid {
+            color: #b91c1c;
+        }
+
+        .row {
+            margin: 18px 0;
+        }
+
+        .label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            font-size: 16px;
+            word-break: break-word;
+        }
+
+        .hash {
+            font-family: monospace;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>AgentProof</h1>
+
+    {% if verified %}
+        <div class="status verified">
+            ✓ VERIFIED
+        </div>
+    {% else %}
+        <div class="status invalid">
+            ✕ INVALID
+        </div>
+    {% endif %}
+
+
+    <div class="row">
+        <div class="label">Receipt ID</div>
+        <div class="value">
+            {{ receipt_id }}
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="label">Agent</div>
+        <div class="value">
+            {{ agent_id }}
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="label">Action</div>
+        <div class="value">
+            {{ action }}
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="label">Result</div>
+        <div class="value">
+            {{ result_status }}
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="label">Authorization</div>
+        <div class="value">
+            {{ authorization_status }}
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="label">Timestamp</div>
+        <div class="value">
+            {{ timestamp }}
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="label">Stored Hash</div>
+        <div class="value hash">
+            {{ record_hash }}
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="label">Calculated Hash</div>
+        <div class="value hash">
+            {{ calculated_hash }}
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
