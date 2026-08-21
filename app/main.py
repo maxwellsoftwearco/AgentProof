@@ -5,6 +5,7 @@ from fastapi import (
     HTTPException,
     Request,
 )
+from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
@@ -27,7 +28,7 @@ from .services.api_keys import (
 )
 
 
-# Create the database tables when the application starts.
+# Create database tables when the application starts.
 Base.metadata.create_all(bind=engine)
 
 
@@ -35,12 +36,18 @@ app = FastAPI(
     title="AgentProof",
     description="Verifiable receipts for AI-agent actions.",
     version="0.1.0",
+    docs_url="/api-docs",
+    redoc_url=None,
 )
 
 templates = Jinja2Templates(
     directory="app/templates"
 )
 
+
+# ---------------------------------------------------------
+# HOME
+# ---------------------------------------------------------
 
 @app.get("/")
 def root(request: Request):
@@ -49,6 +56,37 @@ def root(request: Request):
         name="home.html",
         context={},
     )
+
+
+# ---------------------------------------------------------
+# QUICK START
+# ---------------------------------------------------------
+
+@app.get("/quickstart")
+def quickstart(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="quickstart.html",
+        context={},
+    )
+
+
+# ---------------------------------------------------------
+# USER-FRIENDLY DOCUMENTATION
+# ---------------------------------------------------------
+
+@app.get("/docs", response_class=HTMLResponse)
+def docs(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="docs.html",
+        context={},
+    )
+
+
+# ---------------------------------------------------------
+# API KEY AUTHENTICATION
+# ---------------------------------------------------------
 
 def require_api_key(
     x_api_key: str | None = Header(default=None),
@@ -68,6 +106,11 @@ def require_api_key(
 
     return x_api_key
 
+
+# ---------------------------------------------------------
+# CREATE API KEY
+# ---------------------------------------------------------
+
 @app.post("/api-keys")
 def create_new_api_key(
     data: APIKeyCreate,
@@ -84,6 +127,11 @@ def create_new_api_key(
         "warning": "Store this API key securely. It cannot be retrieved later.",
     }
 
+
+# ---------------------------------------------------------
+# CREATE RECEIPT
+# ---------------------------------------------------------
+
 @app.post(
     "/receipts",
     response_model=ReceiptResponse,
@@ -94,15 +142,12 @@ def create_receipt(
     db: Session = Depends(get_db),
     api_key: str = Depends(require_api_key),
 ):
-    # Generate a unique ID for this receipt.
     receipt_id = create_receipt_id()
 
-    # Convert the timestamp into our standard format.
     timestamp = normalize_timestamp(
         receipt.timestamp
     )
 
-    # Create the exact record that will be hashed.
     canonical_record = canonicalize_record(
         receipt_id=receipt_id,
         agent_id=receipt.agent_id,
@@ -113,12 +158,10 @@ def create_receipt(
         metadata=receipt.metadata,
     )
 
-    # Calculate the SHA-256 hash.
     record_hash = calculate_hash(
         canonical_record
     )
 
-    # Create the database object.
     db_receipt = Receipt(
         receipt_id=receipt_id,
         agent_id=receipt.agent_id,
@@ -130,12 +173,10 @@ def create_receipt(
         record_hash=record_hash,
     )
 
-    # Save it to the database.
     db.add(db_receipt)
     db.commit()
     db.refresh(db_receipt)
 
-    # Send the receipt back to the person who created it.
     return ReceiptResponse(
         receipt_id=db_receipt.receipt_id,
         agent_id=db_receipt.agent_id,
@@ -151,12 +192,15 @@ def create_receipt(
     )
 
 
+# ---------------------------------------------------------
+# GET RECEIPT DATA
+# ---------------------------------------------------------
+
 @app.get("/receipts/{receipt_id}")
 def get_receipt(
     receipt_id: str,
     db: Session = Depends(get_db),
 ):
-    # Look for the receipt in the database.
     receipt = (
         db.query(Receipt)
         .filter(
@@ -165,14 +209,12 @@ def get_receipt(
         .first()
     )
 
-    # If it doesn't exist, return an error.
     if receipt is None:
         raise HTTPException(
             status_code=404,
             detail="Receipt not found",
         )
 
-    # Recreate the original record.
     canonical_record = canonicalize_record(
         receipt_id=receipt.receipt_id,
         agent_id=receipt.agent_id,
@@ -183,13 +225,10 @@ def get_receipt(
         metadata=receipt.metadata_json,
     )
 
-    # Calculate the hash again.
     calculated_hash = calculate_hash(
         canonical_record
     )
 
-    # Compare the newly calculated hash
-    # against the hash stored in the database.
     verified = (
         calculated_hash == receipt.record_hash
     )
@@ -199,15 +238,18 @@ def get_receipt(
         "agent_id": receipt.agent_id,
         "action": receipt.action,
         "timestamp": receipt.timestamp,
-        "authorization_status": (
-            receipt.authorization_status
-        ),
+        "authorization_status": receipt.authorization_status,
         "result_status": receipt.result_status,
         "metadata": receipt.metadata_json,
         "record_hash": receipt.record_hash,
         "calculated_hash": calculated_hash,
         "verified": verified,
     }
+
+
+# ---------------------------------------------------------
+# PUBLIC VERIFICATION PAGE
+# ---------------------------------------------------------
 
 @app.get("/verify/{receipt_id}")
 def verify_page(
@@ -243,14 +285,6 @@ def verify_page(
         canonical_record
     )
 
-@app.get("/quickstart")
-def quickstart(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="quickstart.html",
-        context={},
-    )
-
     verified = (
         calculated_hash == receipt.record_hash
     )
@@ -263,9 +297,7 @@ def quickstart(request: Request):
             "agent_id": receipt.agent_id,
             "action": receipt.action,
             "timestamp": receipt.timestamp,
-            "authorization_status": (
-                receipt.authorization_status
-            ),
+            "authorization_status": receipt.authorization_status,
             "result_status": receipt.result_status,
             "record_hash": receipt.record_hash,
             "calculated_hash": calculated_hash,

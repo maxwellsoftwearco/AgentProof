@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgentProof Documentation</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8fafc;
+            color: #172033;
+        }
+
+        .topbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .nav {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-button {
+            text-decoration: none;
+            color: #374151;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            padding: 9px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-button:hover {
+            background: #e5e7eb;
+        }
+
+        .primary {
+            background: #111827;
+            color: white;
+            border-color: #111827;
+        }
+
+        .primary:hover {
+            background: #1f2937;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 70px 24px;
+        }
+
+        .eyebrow {
+            font-size: 13px;
+            font-weight: 700;
+            color: #2563eb;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 46px;
+            line-height: 1.1;
+            margin: 0 0 18px;
+            letter-spacing: -1px;
+        }
+
+        .intro {
+            font-size: 19px;
+            line-height: 1.7;
+            color: #64748b;
+            max-width: 700px;
+            margin-bottom: 50px;
+        }
+
+        .section {
+            margin-top: 55px;
+        }
+
+        h2 {
+            font-size: 29px;
+            margin-bottom: 12px;
+        }
+
+        h3 {
+            font-size: 20px;
+            margin-top: 0;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #475569;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 28px;
+            margin: 20px 0;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .number {
+            min-width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #111827;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h3 {
+            margin-bottom: 8px;
+        }
+
+        .code-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #475569;
+            margin: 24px 0 8px;
+        }
+
+        pre {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        code {
+            font-family: Consolas, Monaco, monospace;
+        }
+
+        .note {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-top: 20px;
+        }
+
+        .note strong {
+            color: #1d4ed8;
+        }
+
+        .success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .success strong {
+            color: #15803d;
+        }
+
+        ul {
+            color: #475569;
+            line-height: 1.9;
+            padding-left: 24px;
+        }
+
+        .endpoint {
+            display: inline-block;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 5px 9px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+            padding: 40px 20px;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 70px;
+        }
+
+        @media (max-width: 650px) {
+            .nav {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .nav-buttons {
+                width: 100%;
+            }
+
+            .nav-button {
+                flex: 1;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .container {
+                padding-top: 45px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <nav class="nav">
+        <div class="brand">AgentProof</div>
+
+        <div class="nav-buttons">
+            <a class="nav-button" href="/">Home</a>
+            <a class="nav-button" href="/quickstart">Quick Start</a>
+            <a class="nav-button primary" href="/api-docs">API Reference</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container">
+
+    <div class="eyebrow">Documentation</div>
+
+    <h1>Build trust into your AI agents.</h1>
+
+    <p class="intro">
+        AgentProof records important actions performed by AI agents and
+        creates verifiable receipts. Each receipt includes the agent,
+        action, result, timestamp, and an integrity hash.
+    </p>
+
+
+    <section class="section">
+
+        <h2>How AgentProof works</h2>
+
+        <div class="card">
+            <div class="step">
+                <div class="number">1</div>
+
+                <div class="step-content">
+                    <h3>Create an API key</h3>
+
+                    <p>
+                        Your application uses an AgentProof API key when
+                        sending information to the service.
+                    </p>
+
+                    <p>
+                        You can create your API key through the
+                        <strong>API Reference</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="step">
+                <div class="number">2</div>
+
+                <div class="step-content">
+                    <h3>Record an AI-agent action</h3>
+
+                    <p>
+                        When your agent performs an important action,
+                        send the action to AgentProof.
+                    </p>
+
+                    <div class="code-title">Request</div>
+
+<pre><code>POST /receipts
+
+{
+  "agent_id": "customer-support-agent",
+  "action": "send_email",
+  "timestamp": "2026-08-21T00:00:00Z",
+  "authorization_status": "authorized",
+  "result_status": "success",
+  "metadata": {
+    "email": "customer@example.com"
+  }
+}</code></pre>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="step">
+                <div class="number">3</div>
+
+                <div class="step-content">
+                    <h3>AgentProof creates a receipt</h3>
+
+                    <p>
+                        AgentProof generates a unique receipt ID and
+                        calculates a SHA-256 integrity hash for the
+                        recorded information.
+                    </p>
+
+                    <div class="code-title">Example response</div>
+
+<pre><code>{
+  "receipt_id": "AP-EXAMPLE123",
+  "agent_id": "customer-support-agent",
+  "action": "send_email",
+  "result_status": "success",
+  "record_hash": "sha256...",
+  "verification_url": "https://agentproof-dydt.onrender.com/verify/AP-EXAMPLE123"
+}</code></pre>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="step">
+                <div class="number">4</div>
+
+                <div class="step-content">
+                    <h3>Verify the receipt</h3>
+
+                    <p>
+                        The receipt has a verification URL that can be
+                        shared with anyone who needs to check the record.
+                    </p>
+
+                    <div class="success">
+                        <strong>VERIFIED</strong>
+
+                        <p>
+                            AgentProof recalculates the receipt's hash and
+                            compares it with the original stored hash.
+                            If they match, the receipt data has not been
+                            detected as modified.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>What is in a receipt?</h2>
+
+        <p>
+            Every receipt records the information needed to understand
+            what an AI agent did.
+        </p>
+
+        <div class="card">
+
+            <ul>
+                <li><strong>Receipt ID</strong> — unique identifier for the record</li>
+                <li><strong>Agent ID</strong> — identifies the AI agent</li>
+                <li><strong>Action</strong> — describes what the agent did</li>
+                <li><strong>Authorization</strong> — records whether the action was authorized</li>
+                <li><strong>Result</strong> — records whether the action succeeded or failed</li>
+                <li><strong>Timestamp</strong> — records when the action occurred</li>
+                <li><strong>Metadata</strong> — additional information about the action</li>
+                <li><strong>SHA-256 hash</strong> — protects the integrity of the receipt</li>
+                <li><strong>Verification URL</strong> — lets others check the receipt</li>
+            </ul>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>API endpoints</h2>
+
+        <p>
+            These are the main endpoints currently available in AgentProof.
+        </p>
+
+        <div class="card">
+
+            <h3>Create an API key</h3>
+
+            <p>
+                <span class="endpoint">POST /api-keys</span>
+            </p>
+
+            <p>
+                Creates a new API key for your application.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Create a receipt</h3>
+
+            <p>
+                <span class="endpoint">POST /receipts</span>
+            </p>
+
+            <p>
+                Records an AI-agent action and returns the new receipt.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Get a receipt</h3>
+
+            <p>
+                <span class="endpoint">GET /receipts/{receipt_id}</span>
+            </p>
+
+            <p>
+                Retrieves a receipt and checks its integrity.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Verify a receipt</h3>
+
+            <p>
+                <span class="endpoint">GET /verify/{receipt_id}</span>
+            </p>
+
+            <p>
+                Opens the human-friendly verification page for a receipt.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Using the API</h2>
+
+        <p>
+            You do not need to memorize the API format. AgentProof provides
+            an interactive API reference where you can see each endpoint,
+            enter your information, and test requests.
+        </p>
+
+        <a class="nav-button primary" href="/api-docs">
+            Open API Reference
+        </a>
+
+        <div class="note">
+            <strong>Keep your API key private.</strong>
+
+            <p>
+                Your API key should be stored securely in your application.
+                Do not publish it in public source code or send it to other
+                people.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Ready to start?</h2>
+
+        <p>
+            If this is your first time using AgentProof, start with the
+            Quick Start guide.
+        </p>
+
+        <a class="nav-button primary" href="/quickstart">
+            Open Quick Start
+        </a>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+    AgentProof · Verifiable receipts for AI-agent actions
+</footer>
+
+</body>
+</html>
