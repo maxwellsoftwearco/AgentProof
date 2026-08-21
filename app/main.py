@@ -243,6 +243,14 @@ def verify_page(
         canonical_record
     )
 
+@app.get("/quickstart")
+def quickstart(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="quickstart.html",
+        context={},
+    )
+
     verified = (
         calculated_hash == receipt.record_hash
     )

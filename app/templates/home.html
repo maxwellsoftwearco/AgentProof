@@ -1,308 +1,279 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>AgentProof — Verifiable AI Actions</title>
+    <title>AgentProof — Verifiable AI Agent Actions</title>
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f7f8fa;
+            color: #171717;
+        }
 
-    body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        background: #0b1020;
-        color: #ffffff;
-    }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
 
-    .container {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 0 24px;
-    }
-
-    nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 24px 0;
-    }
-
-    .logo {
-        font-size: 24px;
-        font-weight: 700;
-    }
-
-    .nav-links {
-        display: flex;
-        gap: 20px;
-    }
-
-    .nav-links a {
-        color: #b9c2d0;
-        text-decoration: none;
-    }
-
-    .nav-links a:hover {
-        color: #ffffff;
-    }
-
-    .hero {
-        text-align: center;
-        padding: 100px 0 80px;
-    }
-
-    .badge {
-        display: inline-block;
-        padding: 8px 14px;
-        border: 1px solid #334155;
-        border-radius: 999px;
-        color: #a5b4fc;
-        font-size: 14px;
-        margin-bottom: 24px;
-    }
-
-    h1 {
-        font-size: clamp(42px, 7vw, 76px);
-        line-height: 1.05;
-        margin: 0 auto 24px;
-        max-width: 850px;
-    }
-
-    .hero p {
-        color: #aab4c3;
-        font-size: 20px;
-        line-height: 1.6;
-        max-width: 700px;
-        margin: 0 auto 36px;
-    }
-
-    .buttons {
-        display: flex;
-        justify-content: center;
-        gap: 14px;
-        flex-wrap: wrap;
-    }
-
-    .button {
-        display: inline-block;
-        padding: 14px 22px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-    .primary {
-        background: #ffffff;
-        color: #0b1020;
-    }
-
-    .secondary {
-        border: 1px solid #334155;
-        color: #ffffff;
-    }
-
-    .section {
-        padding: 70px 0;
-    }
-
-    .section h2 {
-        text-align: center;
-        font-size: 36px;
-        margin-bottom: 16px;
-    }
-
-    .section-intro {
-        text-align: center;
-        color: #aab4c3;
-        max-width: 650px;
-        margin: 0 auto 40px;
-        line-height: 1.6;
-    }
-
-    .cards {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-    }
-
-    .card {
-        background: #111827;
-        border: 1px solid #1f2937;
-        border-radius: 12px;
-        padding: 28px;
-    }
-
-    .card h3 {
-        margin-top: 0;
-    }
-
-    .card p {
-        color: #aab4c3;
-        line-height: 1.6;
-    }
-
-    .example {
-        background: #111827;
-        border: 1px solid #1f2937;
-        border-radius: 12px;
-        padding: 28px;
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    pre {
-        white-space: pre-wrap;
-        overflow-x: auto;
-        color: #cbd5e1;
-        line-height: 1.6;
-    }
-
-    footer {
-        border-top: 1px solid #1f2937;
-        margin-top: 60px;
-        padding: 30px 0;
-        text-align: center;
-        color: #64748b;
-    }
-
-    @media (max-width: 750px) {
-        .cards {
-            grid-template-columns: 1fr;
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 70px;
         }
 
         .hero {
-            padding-top: 60px;
+            max-width: 760px;
         }
 
-        .nav-links {
-            gap: 10px;
+        .badge {
+            display: inline-block;
+            background: #e8f5ee;
+            color: #147a43;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
-    }
-</style>
-```
 
+        h1 {
+            font-size: 56px;
+            line-height: 1.05;
+            margin: 0 0 22px;
+        }
+
+        .subtitle {
+            font-size: 21px;
+            line-height: 1.6;
+            color: #666;
+            max-width: 700px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 14px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .primary {
+            background: #111;
+            color: white;
+        }
+
+        .secondary {
+            border: 1px solid #ccc;
+            color: #171717;
+            background: white;
+        }
+
+        .section {
+            margin-top: 100px;
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #666;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 700px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .code {
+            background: #18181b;
+            color: #f4f4f5;
+            padding: 25px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-top: 30px;
+        }
+
+        .cta {
+            margin-top: 100px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            padding: 40px;
+        }
+
+        @media (max-width: 700px) {
+            h1 {
+                font-size: 40px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="container">
 
-```
-<nav>
-    <div class="logo">AgentProof</div>
-
-    <div class="nav-links">
-        <a href="/docs">API Docs</a>
-        <a href="/verify/AP-DEMO">Verify</a>
-    </div>
-</nav>
-
-<section class="hero">
-
-    <div class="badge">
-        Verifiable receipts for AI agents
+    <div class="brand">
+        AgentProof
     </div>
 
-    <h1>
-        Proof of what your AI agents actually did.
-    </h1>
+    <div class="hero">
 
-    <p>
-        AgentProof creates tamper-evident receipts for AI-agent actions
-        so developers can record, verify, and prove what happened.
-    </p>
-
-    <div class="buttons">
-        <a class="button primary" href="/docs">
-            Get Started
-        </a>
-
-        <a class="button secondary" href="/docs">
-            View API Docs
-        </a>
-    </div>
-
-</section>
-
-<section class="section">
-
-    <h2>How it works</h2>
-
-    <p class="section-intro">
-        Give your AI agent an AgentProof API key and record important
-        actions through the API or SDK.
-    </p>
-
-    <div class="cards">
-
-        <div class="card">
-            <h3>1. Record</h3>
-
-            <p>
-                Your application sends AgentProof information about
-                an AI agent action.
-            </p>
+        <div class="badge">
+            VERIFIABLE AI AGENT ACTIONS
         </div>
 
-        <div class="card">
-            <h3>2. Hash</h3>
+        <h1>
+            Proof of what your AI agents actually did.
+        </h1>
 
-            <p>
-                AgentProof creates a cryptographic hash from the
-                recorded information.
-            </p>
-        </div>
+        <p class="subtitle">
+            AgentProof creates tamper-evident receipts for actions
+            performed by AI agents. Record what happened, verify the
+            integrity of the record, and share proof with anyone.
+        </p>
 
-        <div class="card">
-            <h3>3. Verify</h3>
+        <div class="buttons">
 
-            <p>
-                Anyone with the receipt can verify whether the
-                recorded information still matches its original hash.
-            </p>
+            <a class="button primary" href="/quickstart">
+                Get Started
+            </a>
+
+            <a class="button secondary" href="/docs">
+                API Documentation
+            </a>
+
         </div>
 
     </div>
 
-</section>
 
-<section class="section">
+    <div class="section">
 
-    <h2>Example receipt</h2>
+        <h2>Why AgentProof?</h2>
 
-    <p class="section-intro">
-        Every receipt identifies the agent and the action that was
-        recorded.
-    </p>
+        <p class="description">
+            As AI agents begin taking real actions, organizations need
+            a reliable way to record what those agents did and verify
+            that the records have not been modified.
+        </p>
 
-    <div class="example">
-```
+        <div class="cards">
 
-<pre>{
-  "receipt_id": "AP-EXAMPLE123",
+            <div class="card">
+                <h3>Record</h3>
+
+                <p>
+                    Create a receipt containing the agent, action,
+                    timestamp, authorization status, result, and
+                    additional metadata.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Verify</h3>
+
+                <p>
+                    AgentProof calculates a SHA-256 hash so the receipt
+                    data can be checked for unexpected modification.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Share</h3>
+
+                <p>
+                    Every receipt has a verification URL that can be
+                    shared with another person or system.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>Simple API</h2>
+
+        <p class="description">
+            Your application sends an agent action to AgentProof.
+        </p>
+
+<pre class="code"><code>POST /receipts
+
+{
   "agent_id": "customer-support-agent",
   "action": "send_email",
   "authorization_status": "authorized",
-  "result_status": "success",
-  "record_hash": "a8f4...9c21",
-  "verified": true
-}</pre>
+  "result_status": "success"
+}</code></pre>
 
-```
     </div>
 
-</section>
 
-<footer>
-    AgentProof — Verifiable receipts for AI-agent actions.
-</footer>
-```
+    <div class="cta">
+
+        <h2>Start building with AgentProof</h2>
+
+        <p class="description">
+            Create an API key, send your first receipt, and verify
+            the result.
+        </p>
+
+        <div class="buttons">
+
+            <a class="button primary" href="/quickstart">
+                Quick Start
+            </a>
+
+            <a class="button secondary" href="/docs">
+                Open API Docs
+            </a>
+
+        </div>
+
+    </div>
 
 </div>
 
